@@ -1,4 +1,3 @@
-
 # Particle Simulator
 
 Particle Simulator is an interactive OpenGL application designed to simulate and render a large number of particles in real-time. The program allows users to interact with the particles using both mouse and keyboard inputs.
@@ -53,7 +52,7 @@ This project relies on the following libraries, managed using [vcpkg](https://gi
 3. **Install required packages**:
 
    ```bash
-   .\vcpkg install glew:x64-windows glfw3:x64-windows glm:x64-windows freeglut:x64-windows
+   .\vcpkg install glew:x64-windows glfw3:x64-windows glm:x64-windows
    ```
 
 ### Building the Project
@@ -62,7 +61,7 @@ This project relies on the following libraries, managed using [vcpkg](https://gi
 
    ```bash
    git clone https://github.com/zaedynk/Particle-Simulator
-   cd ParticleSimulator
+   cd ParticleSimulator/ParticleSimulator
    ```
 
 2. **Create a build directory**:
