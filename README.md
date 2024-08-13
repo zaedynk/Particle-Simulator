@@ -61,7 +61,7 @@ This project relies on the following libraries, managed using [vcpkg](https://gi
 1. **Clone the Particle Simulator repository**:
 
    ```bash
-   git clone https://github.com/zaedynk/ParticleSimulator
+   git clone https://github.com/zaedynk/Particle-Simulator
    cd ParticleSimulator
    ```
 
