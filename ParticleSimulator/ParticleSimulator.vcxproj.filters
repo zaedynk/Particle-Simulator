@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{3f4586e2-a503-4775-8829-90f91e64089f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\input">
+      <UniqueIdentifier>{3ee3f43f-1b97-4e06-9811-aded5f2951f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\graphics">
+      <UniqueIdentifier>{7ed985c9-6025-48fa-ad70-d2653a847188}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>src\input</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>src\graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InputManager.h">
+      <Filter>src\input</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>src\graphics</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
