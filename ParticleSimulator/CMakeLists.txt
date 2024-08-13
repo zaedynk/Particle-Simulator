@@ -19,7 +19,6 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED CONFIG)
 find_package(glfw3 REQUIRED CONFIG)
 find_package(glm REQUIRED CONFIG)
-find_package(FreeGLUT REQUIRED CONFIG)
 
 # Source files
 set(SOURCES
@@ -33,4 +32,4 @@ set(SOURCES
 add_executable(ParticleSimulator ${SOURCES})
 
 # Link libraries
-target_link_libraries(ParticleSimulator PRIVATE OpenGL::GL GLEW::GLEW glfw glm::glm freeglut::freeglut)
+target_link_libraries(ParticleSimulator PRIVATE OpenGL::GL GLEW::GLEW glfw glm::glm)
