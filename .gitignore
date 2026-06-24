@@ -10,6 +10,7 @@ x86/
 
 # Visual Studio
 .vs/
+*.sln
 *.user
 *.suo
 *.VC.db

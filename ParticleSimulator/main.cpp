@@ -94,12 +94,18 @@ static void renderText(GLFWwindow* window) {
     glLoadIdentity();
     glScalef(2.0f, 2.0f, 1.0f); // make the tiny bitmap font more readable
 
+    glColor3f(1.0f, 1.0f, 1.0f); // stb_easy_font draws in the current color
+
+    // Unbind any array buffer so glVertexPointer reads our client-side buffer
+    // (with a buffer bound, the pointer would be treated as an offset into it).
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     static char buffer[60000];
     unsigned char white[4] = { 255, 255, 255, 255 };
     glEnableClientState(GL_VERTEX_ARRAY);
-    float y = 5.0f;
+    float y = 12.0f;
     for (const char* line : lines) {
-        int quads = stb_easy_font_print(5.0f, y, const_cast<char*>(line), white, buffer, sizeof(buffer));
+        int quads = stb_easy_font_print(8.0f, y, const_cast<char*>(line), white, buffer, sizeof(buffer));
         glVertexPointer(2, GL_FLOAT, 16, buffer);
         glDrawArrays(GL_QUADS, 0, quads * 4);
         y += 12.0f;
