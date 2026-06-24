@@ -22,10 +22,9 @@ find_package(glm REQUIRED CONFIG)
 
 # Source files
 set(SOURCES
-    Main.cpp
-    InputManager.cpp
-    Shader.cpp
-    # Add other source files as needed
+    main.cpp
+    input.cpp
+    shaders.cpp
 )
 
 # Add executable

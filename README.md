@@ -1,122 +1,98 @@
 # Particle Simulator
 
-Particle Simulator is an interactive OpenGL application designed to simulate and render a large number of particles in real-time. The program allows users to interact with the particles using both mouse and keyboard inputs.
+A real-time GPU particle simulator written in C++ and OpenGL. It pushes a million
+particles through a compute shader every frame and lets you fly a camera through them
+and pull them around with the mouse.
 
-## Features
+![Particles](https://img.shields.io/badge/particles-1%2C000%2C000-blue) ![OpenGL](https://img.shields.io/badge/OpenGL-4.3-5586A4) ![License](https://img.shields.io/badge/license-MIT-green)
 
-- Real-time particle simulation and rendering
-- Interactive control over particle movement and simulation state
-- Camera movement for exploring the simulation space
+## How it works
+
+Every particle's position, velocity, and color lives in a [shader storage buffer](https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object)
+on the GPU. Each frame:
+
+1. A **compute shader** updates every particle in parallel. While you hold the mouse
+   button, particles are pulled toward a point in space using Newton's law of gravity,
+   with a little drag so the motion settles instead of exploding.
+2. The same buffers are then drawn directly as points by the **render shader**, colored
+   by how fast each particle is moving (slow = blue, fast = green/red).
+
+Because the data never leaves the GPU, the simulation stays fast even with a million particles.
+
+## Controls
+
+| Input | Action |
+| --- | --- |
+| **Hold left click** | Pull particles toward the cursor |
+| **W A S D** | Move the camera |
+| **Space / Ctrl** | Move the camera up / down |
+| **Shift** | Move faster |
+| **T** | Pause / resume the simulation |
+| **Esc** | Toggle mouse look (turn the camera with the mouse) |
+
+## Requirements
+
+- A GPU and drivers supporting **OpenGL 4.3** (for compute shaders)
+- **CMake** 3.10+
+- A **C++20** compiler (Visual Studio 2019/2022, or GCC/Clang)
+- [**vcpkg**](https://github.com/microsoft/vcpkg) for dependencies
+
+## Build & run
+
+### 1. Install the dependencies with vcpkg
+
+```bash
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg
+./bootstrap-vcpkg.sh      # Windows: .\bootstrap-vcpkg.bat
+./vcpkg install glew glfw3 glm
+```
+
+### 2. Build the project
+
+```bash
+git clone https://github.com/zaedynk/Particle-Simulator
+cd Particle-Simulator/ParticleSimulator
+
+cmake -B build -DCMAKE_TOOLCHAIN_FILE=/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake
+cmake --build build --config Release
+```
+
+Replace `/path/to/vcpkg` with the location of your vcpkg checkout.
+
+### 3. Run
+
+```bash
+./build/bin/ParticleSimulator        # Windows: .\build\bin\Release\ParticleSimulator.exe
+```
+
+> **Tip:** A million particles is demanding. If it runs slowly, lower `PARTICLE_COUNT`
+> near the top of [`main.cpp`](ParticleSimulator/main.cpp) and rebuild.
+
+> **Visual Studio users:** You don't need a separate solution file — open the
+> `ParticleSimulator` folder with *File → Open → Folder* and Visual Studio will
+> configure the CMake project automatically (set the vcpkg toolchain in CMake settings).
+
+## Project layout
+
+| File | Purpose |
+| --- | --- |
+| `main.cpp` | Window setup, buffer creation, and the main render loop |
+| `input.h` / `input.cpp` | Camera movement and mouse interaction |
+| `shaders.h` / `shaders.cpp` | Shader compilation plus the GLSL source (compute / vertex / fragment) |
+| `stb_easy_font.h` | Tiny public-domain header used to draw the on-screen hints |
+| `CMakeLists.txt` | Cross-platform build configuration |
 
 ## Dependencies
 
-This project relies on the following libraries, managed using [vcpkg](https://github.com/microsoft/vcpkg):
-
-- **OpenGL**: Core rendering API
-- **GLEW**: OpenGL Extension Wrangler Library
-- **GLFW**: Library for handling window and input events
-- **GLM**: OpenGL Mathematics library
-- **GLUT**: For rendering bitmap text
-
-## Getting Started
-
-### Prerequisites
-
-- **CMake** 3.10 or higher
-- **vcpkg**: Package manager for installing dependencies
-- **Visual Studio 2019/2022** or a similar C++20 compliant compiler
-
-### Installing Dependencies
-
-1. **Clone the vcpkg repository**:
-
-   ```bash
-   git clone https://github.com/microsoft/vcpkg.git
-   cd vcpkg
-   ```
-
-2. **Bootstrap vcpkg**:
-
-   - **On Windows**:
-
-     ```bash
-     .\bootstrap-vcpkg.bat
-     ```
-
-   - **On Unix**:
-
-     ```bash
-     ./bootstrap-vcpkg.sh
-     ```
-
-3. **Install required packages**:
-
-   ```bash
-   .\vcpkg install glew:x64-windows glfw3:x64-windows glm:x64-windows
-   ```
-
-### Building the Project
-
-1. **Clone the Particle Simulator repository**:
-
-   ```bash
-   git clone https://github.com/zaedynk/Particle-Simulator
-   cd ParticleSimulator/ParticleSimulator
-   ```
-
-2. **Create a build directory**:
-
-   ```bash
-   mkdir build
-   cd build
-   ```
-
-3. **Configure the project with CMake**:
-
-   ```bash
-   cmake .. -DCMAKE_TOOLCHAIN_FILE=C:/path/to/vcpkg/scripts/buildsystems/vcpkg.cmake
-   ```
-
-   Replace `C:/path/to/vcpkg` with the actual path to your vcpkg installation.
-
-4. **Build the project**:
-
-   ```bash
-   cmake --build .
-   ```
-
-### Running the Application
-
-After building, navigate to the `bin` directory inside your build folder and run the `ParticleSimulator.exe`:
-
-```bash
-cd bin
-ParticleSimulator.exe
-```
-
-## Instructions
-
-- **Hold Left Click**: Move particles toward the mouse position.
-- **Hit T**: Pause or resume the simulation.
-- **WASD**: Move the camera around the scene.
-- **Escape**: Lock/hide the mouse for immersive camera movement.
-
-## Project Structure
-
-- `Main.cpp`: Entry point for the application
-- `InputManager.cpp`: Handles user input
-- `Shader.cpp`: Manages shader programs
-- `ComputeShader.glsl`: Computes particle dynamics
-- `CMakeLists.txt`: Build configuration file
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for any features or bug fixes you would like to add.
+| Library | Role |
+| --- | --- |
+| [OpenGL](https://www.opengl.org/) | Core rendering and compute API |
+| [GLEW](https://glew.sourceforge.net/) | Loads modern OpenGL functions |
+| [GLFW](https://www.glfw.org/) | Window creation and input |
+| [GLM](https://github.com/g-truc/glm) | Vector and matrix math |
+| [stb_easy_font](https://github.com/nothings/stb) | On-screen text (vendored, no install needed) |
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-This project uses open-source libraries provided by the community. Special thanks to the contributors of GLEW, GLFW, GLM, and FreeGLUT.
+Released under the MIT License — see [LICENSE](LICENSE).
